@@ -76,9 +76,13 @@ class IRC:
         """
         while 1:
             resp = self.irc.recv(2040).decode("UTF-8")
+
+            # Keep connection alive
             if "PING" in resp:
                 print("PONG " + resp.split()[1])
                 self.irc.send(bytes("PONG " + resp.split()[1] + "\n", "UTF-8"))
+
+            # Better private message visualization
             if "PRIVMSG" in resp:
                 username = resp.split("!")[0][1:]
                 message = resp.split(f"PRIVMSG {bot_nick_name} :")[1]
